@@ -5,7 +5,7 @@ import { ref } from "vue";
 
 const phoneNumber = ref("");
 const sms = ref("");
-let timer: number | null;
+let timer: ReturnType<typeof setInterval> | null;
 const timerCount = ref(0);
 const loginRes = ref<ApiService.ApiWrap<ApiAuth.Token | null>>();
 
@@ -19,8 +19,8 @@ async function getCode() {
     timerCount.value = 60;
     timer = setInterval(() => {
       timerCount.value--;
-      if (timerCount.value <= 0) {
-        clearInterval(timer as number);
+      if (timerCount.value <= 0 && timer) {
+        clearInterval(timer);
         timer = null;
       }
     }, 1000);
