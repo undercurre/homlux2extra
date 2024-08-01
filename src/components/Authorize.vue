@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { fetchLogin, fetchSmsCode } from "@/api";
 import logo from "@/assets/mideaLogo.png";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+
+const redirectUri = ref("");
+const state = ref("");
 
 const phoneNumber = ref("");
 const sms = ref("");
@@ -31,9 +34,17 @@ async function onSubmit() {
   const { data } = await fetchLogin({
     mobilePhone: phoneNumber.value,
     captcha: sms.value,
+    state: state.value,
+    redirectUri: redirectUri.value,
   });
   loginRes.value = data;
 }
+
+onMounted(() => {
+  const params = new URLSearchParams(window.location.search);
+  redirectUri.value = params.get("redirectUri") || "defaultRedirectUri";
+  state.value = params.get("state") || "defaultState";
+});
 </script>
 
 <template>

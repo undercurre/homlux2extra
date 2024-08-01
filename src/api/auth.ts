@@ -7,8 +7,10 @@ import request from "../utils/request";
  */
 export function fetchSmsCode(mobilePhone: string) {
   return request.post<ApiService.ApiWrap<null>>(
-    "/v1/mzgd/cl/auth/get/captcha",
-    { mobilePhone }
+    "/v1/mzgdApi/auth/get/captcha",
+    {
+      mobilePhone,
+    }
   );
 }
 
@@ -19,9 +21,14 @@ export function fetchSmsCode(mobilePhone: string) {
  * @param {String} params.mobilePhone - 用户手机
  * @param {String} params.captcha - 用户手机验证码
  */
-export function fetchLogin(params: { mobilePhone: string; captcha: string }) {
+export function fetchLogin(params: {
+  mobilePhone: string;
+  captcha: string;
+  state: string;
+  redirectUri: string;
+}) {
   return request.post<ApiService.ApiWrap<ApiAuth.Token>>(
-    "/v1/mzgd/cl/auth/web/login",
+    "/v1/open/auth/login",
     params
   );
 }
